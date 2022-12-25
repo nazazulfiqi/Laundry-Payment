@@ -1,0 +1,275 @@
+unit Unit6;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, jpeg, ExtCtrls, StdCtrls, DB, ADODB, Grids, DBGrids, Mask,
+  DBCtrls, ComCtrls;
+
+type
+  TForm6 = class(TForm)
+    Image1: TImage;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    GroupBox2: TGroupBox;
+    Label4: TLabel;
+    Label6: TLabel;
+    Edit4: TEdit;
+    ADOConnection1: TADOConnection;
+    ADOQuery1: TADOQuery;
+    DBGrid1: TDBGrid;
+    DataSource1: TDataSource;
+    Button1: TButton;
+    GroupBox3: TGroupBox;
+    Edit7: TEdit;
+    Edit8: TEdit;
+    Label9: TLabel;
+    Label10: TLabel;
+    Button2: TButton;
+    DataSource3: TDataSource;
+    Edit9: TEdit;
+    Edit11: TEdit;
+    Label12: TLabel;
+    Label14: TLabel;
+    Memo1: TMemo;
+    Button4: TButton;
+    Button5: TButton;
+    Button3: TButton;
+    Label8: TLabel;
+    Edit3: TEdit;
+    ADOQuery2: TADOQuery;
+    ComboBox1: TComboBox;
+    Label11: TLabel;
+    Edit6: TEdit;
+    Label5: TLabel;
+    DT1: TDateTimePicker;
+    DT2: TDateTimePicker;
+    GroupBox4: TGroupBox;
+    Label7: TLabel;
+    Label13: TLabel;
+    procedure Edit4KeyPress(Sender: TObject; var Key: Char);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure Memo1KeyPress(Sender: TObject; var Key: Char);
+    procedure Button3Click(Sender: TObject);
+    procedure Edit2KeyPress(Sender: TObject; var Key: Char);
+    procedure Edit7KeyPress(Sender: TObject; var Key: Char);
+    procedure ComboBox1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form6: TForm6;
+
+implementation
+
+uses Unit9, Unit2, Unit13, Unit4;
+
+{$R *.dfm}
+
+procedure TForm6.Edit4KeyPress(Sender: TObject; var Key: Char);
+var
+berat,h,harga:integer;
+begin
+if not  (key in['0'..'9', #8, #13, #32]) then
+key :=#0;
+begin
+if key=#13 then
+begin
+berat:=strtoint(edit4.text);
+harga:=strtoint(edit9.text);
+begin
+messagedlg('Silahkan Klik Pesan!',mtinformation,[mbok],0);
+h:=berat*harga;
+edit6.text:=inttostr(h);
+end;
+end;
+
+end;
+
+end;
+
+
+procedure TForm6.Button1Click(Sender: TObject);
+var
+v,t,z:integer;
+o,n:real;
+begin
+if edit1.text='' then
+begin
+messagedlg('Semua Wajib Diisi!',mtinformation,[mbok],0);
+end
+else if edit2.text='' then
+begin
+messagedlg('Semua Wajib Diisi!',mtinformation,[mbok],0);
+end
+else
+begin
+messagedlg('Sukses,Silahkan Lanjut ke Pembayaran!',mtinformation,[mbok],0);
+begin
+edit7.Enabled:=True;
+button2.Enabled:=True;
+
+
+//form2.ADOQuery1.Close;
+end;
+end;
+end;
+
+procedure TForm6.Button2Click(Sender: TObject);
+var
+na,za:integer;
+qi : real;
+begin
+if edit7.text='' then
+begin
+messagedlg('Semua Wajib Diisi!',mtinformation,[mbok],0);
+end
+else
+begin
+na:=strtoint(edit7.Text);
+za:=strtoint(edit6.Text);
+if na < za then
+begin
+messagedlg('Uang Kurang!',mtinformation,[mbok],0);
+end
+else
+begin
+messagedlg('Sukses,Silahkan Cetak Struk!',mtinformation,[mbok],0);
+qi:=na-za;
+edit8.Text:=floattostr(qi);
+button4.Enabled:=true;
+end;
+end;
+end;
+
+procedure TForm6.FormCreate(Sender: TObject);
+begin
+memo1.Text:='';
+combobox1.Items.Add('3 Hari');
+combobox1.Items.Add('1 Hari');
+combobox1.Items.Add('6 Jam');
+end;
+
+procedure TForm6.Button4Click(Sender: TObject);
+begin
+adoquery1.append;
+form13.adoquery1.Append;
+adoquery1.FieldByName('waktu').AsString:=combobox1.Text;
+adoquery1.FieldByName('harga').AsString:=edit9.Text;
+adoquery1.FieldByName('berat').AsString:=edit4.Text;
+adoquery1.FieldByName('total_harga').AsString:=edit6.Text;
+adoquery1.FieldByName('kode_pembayaran').AsString:=edit11.Text;
+form13.adoquery1.FieldByName('nama').AsString:=edit1.text;
+form13.adoquery1.FieldByName('no_telp').AsString:=edit2.text;
+form13.adoquery1.FieldByName('alamat').AsString:=memo1.text;
+form13.adoquery1.FieldByName('waktu').AsString:=combobox1.text;
+form13.adoquery1.FieldByName('harga').AsString:=edit9.text;
+form13.adoquery1.FieldByName('berat').AsString:=edit4.text;
+form13.adoquery1.FieldByName('jenis').AsString:=edit3.text;
+form13.adoquery1.FieldByName('total_harga').AsString:=edit6.text;
+form13.adoquery1.FieldByName('kode_pembayaran').AsString:=edit11.text;
+form13.adoquery1.FieldByName('bayar').AsString:=edit7.text;
+form13.adoquery1.FieldByName('kembali').AsString:=edit8.text;
+form13.ADOQuery1.FieldByName('tanggal_pesan').AsDateTime:=DT1.Date;
+form13.ADOQuery1.FieldByName('tanggal_ambil').AsDateTime:=DT2.Date;
+adoquery1.Post;
+form13.adoquery1.Post;
+QuickReport9.QRLabel11.Caption:=Edit1.text;
+QuickReport9.QRLabel12.Caption:=Edit2.text;
+QuickReport9.QRLabel13.Caption:=edit9.text;
+QuickReport9.QRLabel14.Caption:=memo1.text;
+QuickReport9.QRLabel15.Caption:=Edit4.text;
+QuickReport9.QRLabel16.Caption:=Combobox1.text;
+QuickReport9.QRLabel17.Caption:=Edit6.text;
+QuickReport9.QRLabel18.Caption:=Edit7.text;
+QuickReport9.QRLabel19.Caption:=Edit8.text;
+QuickReport9.QRLabel21.Caption:=Edit11.text;
+QuickReport9.Preview;
+edit1.text:='';
+edit2.text:='';
+memo1.text:='';
+Combobox1.text:='';
+edit9.text:='0';
+edit4.text:='';
+edit6.text:='0';
+edit7.text:='';
+edit8.text:='';
+edit11.text:='';
+edit7.Enabled:=false;
+button2.Enabled:=false;
+button4.Enabled:=false;
+edit1.SetFocus;
+end;
+
+procedure TForm6.Button5Click(Sender: TObject);
+begin
+messagedlg('Berhasil!',mtinformation,[mbok],0);
+edit1.text:='';
+edit2.text:='';
+memo1.text:='';
+Combobox1.text:='';
+edit9.text:='0';
+edit4.text:='';
+edit6.text:='0';
+edit7.text:='0';
+edit8.text:='0';
+edit11.text:='';
+end;
+
+procedure TForm6.Memo1KeyPress(Sender: TObject; var Key: Char);
+begin
+if key=#13 then
+begin
+edit11.text:='KG'+'-'+ formatdatetime('ddmmyyyy',now)+'-'+inttostr(adoquery1.RecordCount+1);
+end;
+end;
+
+procedure TForm6.Button3Click(Sender: TObject);
+begin
+if messagedlg('Apakah Anda Yakin Ingin Keluar?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+begin
+form6.hide;
+form2.show;
+end;
+end;
+procedure TForm6.Edit2KeyPress(Sender: TObject; var Key: Char);
+begin
+if not  (key in['0'..'9', #8, #13, #32]) then
+key :=#0;
+end;
+
+procedure TForm6.Edit7KeyPress(Sender: TObject; var Key: Char);
+begin
+if not  (key in['0'..'9', #8, #13, #32]) then
+key :=#0;
+end;
+
+procedure TForm6.ComboBox1Click(Sender: TObject);
+begin
+if combobox1.Text='3 Hari' then
+begin
+edit9.Text:='8000';
+end
+else if combobox1.Text='1 Hari' then
+begin
+edit9.Text:='12000';
+end
+else if combobox1.Text='6 Jam' then
+begin
+edit9.Text:='18000';
+end
+end;
+
+end.

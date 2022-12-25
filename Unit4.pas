@@ -1,0 +1,144 @@
+unit Unit4;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, jpeg, ExtCtrls, DB, ADODB, Grids, DBGrids;
+
+type
+  TForm4 = class(TForm)
+    Image1: TImage;
+    GroupBox2: TGroupBox;
+    ADOConnection1: TADOConnection;
+    Edit6: TEdit;
+    Edit7: TEdit;
+    Label7: TLabel;
+    Label8: TLabel;
+    Edit8: TEdit;
+    DBGrid2: TDBGrid;
+    ADOQuery2: TADOQuery;
+    DataSource2: TDataSource;
+    Button5: TButton;
+    Button6: TButton;
+    Button7: TButton;
+    Button8: TButton;
+    Button9: TButton;
+    Button10: TButton;
+    Button11: TButton;
+    procedure Button5Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
+    procedure Button10Click(Sender: TObject);
+    procedure Button11Click(Sender: TObject);
+    procedure Edit4KeyPress(Sender: TObject; var Key: Char);
+    procedure Edit5KeyPress(Sender: TObject; var Key: Char);
+    procedure Edit8KeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form4: TForm4;
+
+implementation
+
+uses Unit3, Unit13, Unit15, Unit6, Unit7;
+
+{$R *.dfm}
+
+procedure TForm4.Button5Click(Sender: TObject);
+begin
+if adoquery2.Locate('kategori',edit6.Text, [lopartialkey]) then
+begin
+messagedlg('Berhasil Ditemukan!',mtinformation,[mbok],0);
+edit7.Text:=ADOquery2['kategori'];
+edit8.Text:=ADOquery2['harga'];
+end
+else
+messagedlg('Tidak Ditemukan!',mtwarning,[mbok],0);
+end;
+
+procedure TForm4.Button6Click(Sender: TObject);
+begin
+messagedlg('Sukses Di Tambahkan!',mtinformation,[mbok],0);
+adoquery2.append;
+adoquery2.FieldByName('kategori').AsString:=edit7.Text;
+adoquery2.FieldByName('harga').AsString:=edit8.Text;
+adoquery2.post;
+edit6.text:='';
+edit7.text:='';
+edit8.text:='';
+end;
+
+procedure TForm4.Button7Click(Sender: TObject);
+begin
+messagedlg('Sukses Di Ubah!',mtinformation,[mbok],0);
+adoquery2.edit;
+adoquery2.FieldByName('kategori').AsString:=edit7.Text;
+adoquery2.FieldByName('harga').AsString:=edit8.Text;
+adoquery2.post;
+end;
+
+procedure TForm4.Button8Click(Sender: TObject);
+begin
+messagedlg('Sukses Di Hapus!',mtinformation,[mbok],0);
+dbgrid2.DataSource.DataSet.Delete;
+edit6.text:='';
+edit7.text:='';
+edit8.text:='';
+end;
+
+procedure TForm4.Button9Click(Sender: TObject);
+begin
+if messagedlg('Apakah Anda Yakin Ingin Keluar?',mtConfirmation,[mbYes,mbNo],0)=mrYes then
+begin
+form4.hide;
+form3.show;
+form7.adoquery3.close;
+end;
+end;
+
+procedure TForm4.Button10Click(Sender: TObject);
+begin
+form4.hide;
+form13.show;
+edit1.Text:='';
+edit2.Text:='';
+edit3.Text:='';
+edit4.Text:='';
+edit5.Text:='';
+end;
+
+procedure TForm4.Button11Click(Sender: TObject);
+begin
+form4.hide;
+form15.show;
+edit6.Text:='';
+edit7.Text:='';
+edit8.Text:='';
+end;
+
+procedure TForm4.Edit4KeyPress(Sender: TObject; var Key: Char);
+begin
+if not  (key in['0'..'9', #8, #13, #32]) then
+key :=#0;
+end;
+
+procedure TForm4.Edit5KeyPress(Sender: TObject; var Key: Char);
+begin
+if not  (key in['0'..'9', #8, #13, #32]) then
+key :=#0;
+end;
+
+procedure TForm4.Edit8KeyPress(Sender: TObject; var Key: Char);
+begin
+if not  (key in['0'..'9', #8, #13, #32]) then
+key :=#0;
+end;
+
+end.
